@@ -448,8 +448,17 @@ impl FileLoader for DefaultFileLoader {
                 let mut from_path = self.interner.lookup_by_file_id(from);
                 assert!(from_path.pop());
 
-                // Resolve the given path relative to the importing file's directory.
-                (from_path.join(path).canonicalize()?, None, None)
+                let resolved_path = match path {
+                    // Resolve // paths relative to the LSP root_dir (if it is provided)
+                    path if path.starts_with("//") => self
+                        .workspace
+                        .join(path.strip_prefix("//").unwrap())
+                        .canonicalize()?,
+                    // Otherwise, resolve the given path relative to the importing file's directory.
+                    _ => from_path.join(path).canonicalize()?,
+                };
+
+                (resolved_path, None, None)
             }
             Dialect::Bazel => {
                 // Parse the load path as a Bazel label.

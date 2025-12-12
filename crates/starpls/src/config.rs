@@ -6,6 +6,7 @@ use crate::commands::server::ServerCommand;
 pub(crate) struct ServerConfig {
     pub(crate) args: ServerCommand,
     pub(crate) caps: ClientCapabilities,
+    pub(crate) root_dir: Option<String>,
 }
 
 macro_rules! try_or_default {

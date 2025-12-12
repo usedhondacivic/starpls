@@ -80,6 +80,7 @@ pub fn process_connection(
     let config = ServerConfig {
         args,
         caps: initialize_params.capabilities,
+        root_dir: initialize_params.root_path,
     };
     let server = Server::new(connection, config)?;
     server.run()

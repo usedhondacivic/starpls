@@ -122,7 +122,7 @@ impl Server {
         let loader = DefaultFileLoader::new(
             bazel_client.clone(),
             path_interner.clone(),
-            bazel_cx.info.workspace.clone(),
+            config.root_dir.clone().unwrap().into(),
             bazel_cx.info.workspace_name,
             bazel_cx.info.output_base.join("external"),
             task_pool_sender.clone(),
